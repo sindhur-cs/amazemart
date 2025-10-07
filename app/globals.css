@@ -25,17 +25,8 @@
   a {
     text-decoration: none;
   }
-  
-  .course-card-link {
-    text-decoration: none !important;
-  }
-  
-  .course-card-link:hover {
-    text-decoration: none !important;
-  }
 }
 
-/* Custom utilities for course showcase */
 @layer utilities {
   .line-clamp-2 {
     display: -webkit-box;

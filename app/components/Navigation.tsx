@@ -41,7 +41,7 @@ export default function Navigation({ page }: NavigationProps) {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="flex items-center justify-center divide-x divide-gray-100">
             {navigationItems.map((item) => {
-              const isActive = pathname === item.href || (item.href === '/' && pathname === '/') || (item.href === '/academy' && pathname.startsWith('/academy'));
+                  const isActive = pathname === item.href || (item.href === '/' && pathname === '/');
               
               return (
                 <Link

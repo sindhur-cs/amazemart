@@ -12,7 +12,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const { header, footer, page, loading } = useHeader();
   const pathname = usePathname();
 
-  const shouldShowCarousel = pathname === '/' || pathname === '/academy';
+  const shouldShowCarousel = pathname === '/';
 
   return (
     <>

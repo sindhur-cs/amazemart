@@ -1,37 +1,17 @@
 "use client";
 
-import { getBlogEntries } from "@/lib/contentstack";
-import { BlogEntry } from "@/lib/types";
-import { useEffect, useState } from "react";
-import BlogGrid from "./components/BlogGrid";
+import PromotionGrid from "./components/PromotionGrid";
 import { useHeader } from "./components/HeaderProvider";
 import Image from "next/image";
+
 export default function Home() {
-  const [blogs, setBlogs] = useState<BlogEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const { header } = useHeader();
+  const { header, page, loading: headerLoading } = useHeader();
 
-  useEffect(() => {
-    const loadBlogs = async () => {
-      try {
-        setLoading(true);
-        const fetchedBlogs = await getBlogEntries();
-        setBlogs(fetchedBlogs as BlogEntry[]);
-      } catch (err) {
-        console.error("Error fetching blog entries:", err);
-        setError("Failed to load blog posts. Please try again later.");
-        } finally {
-          setLoading(false);
-        }
-    };
+  const promotionData = page?.promotion && page.promotion.length > 0 ? page.promotion[0] : null;
 
-    loadBlogs();
-  }, []);
-
-  if (loading) {
+  if (headerLoading) {
     return (
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-gray-50 flex justify-center items-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
             <div className="relative mx-auto mb-4 w-16 h-16">
@@ -44,28 +24,8 @@ export default function Home() {
                 priority
               />
             </div>
-            <h2 className="text-xl font-semibold text-gray-700">Loading Blog Posts...</h2>
-            <p className="text-gray-500 mt-2">Please wait while we fetch the latest posts</p>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
-  if (error) {
-    return (
-      <main className="min-h-screen bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center">
-            <div className="text-red-500 text-4xl mb-4">⚠️</div>
-            <h2 className="text-xl font-semibold text-gray-900">Oops! Something went wrong</h2>
-            <p className="text-gray-600 mt-2 mb-6">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-lg transition-colors"
-            >
-              Try Again
-            </button>
+            <h2 className="text-xl font-semibold text-gray-700">Loading Promotions...</h2>
+            <p className="text-gray-500 mt-2">Please wait while we fetch the latest deals</p>
           </div>
         </div>
       </main>
@@ -73,11 +33,10 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <BlogGrid
-        blogs={blogs}
-        title="Contentstack Blogs"
-        subtitle="Insights, tutorials, and updates from our team. Stay up to date with the latest trends and best practices in content management."
+    <main className="min-h-[75vh] bg-gray-50 flex justify-center items-center">
+      <PromotionGrid
+        promotionData={promotionData}
+        title="Spotlight Deals"
       />
     </main>
   );

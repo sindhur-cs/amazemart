@@ -47,57 +47,7 @@ export interface Block {
 export interface Blocks {
   block: Block;
 }
-export interface Page {
-  uid: string;
-  $: any;
-  _version?: number;
-  title: string;
-  url?: string;
-  description?: string;
-  image?: File | null;
-  rich_text?: string;
-  blocks?: Blocks[];
-}
 
-export interface Course {
-  uid: string;
-  title: string;
-  course_duration: string;
-  course_level: string;
-  course_overview: string;
-  course_type: string;
-  course_video?: File | null;
-  thumbnail_image?: File | null;
-  release_date: string;
-  created_at: string;
-  updated_at: string;
-  created_by: string;
-  updated_by: string;
-  locale: string;
-  tags: string[];
-  publish_details: PublishDetails;
-  ACL: any;
-  _version: number;
-  _in_progress?: boolean;
-}
-export interface BlogEntry {
-  uid: string;
-  title: string;
-  body: string;
-  author_name: string;
-  image?: File | null;
-  date: string;
-  created_at: string;
-  updated_at: string;
-  created_by: string;
-  updated_by: string;
-  locale: string;
-  tags: string[];
-  publish_details: PublishDetails;
-  ACL: any;
-  _version: number;
-  _in_progress?: boolean;
-}
 export interface Header {
   uid: string;
   title: string;
@@ -115,15 +65,9 @@ export interface Header {
   _in_progress?: boolean;
 }
 export interface HeaderLinks {
-  academy?: HeaderSection;
-  blogs?: HeaderSection;
   [key: string]: HeaderSection | undefined;
 }
 export interface HeaderSection {
-  academy?: HeaderLink;
-  blogs?: HeaderLink;
-  academy_image?: File | null;
-  blogs_image?: File | null;
   [key: string]: HeaderLink | File | null | undefined;
 }
 export interface HeaderLink {
@@ -150,8 +94,6 @@ export interface Footer {
   _in_progress?: boolean;
 }
 export interface FooterLinks {
-  academy?: FooterLink;
-  blogs?: FooterLink;
   [key: string]: FooterLink | undefined;
 }
 export interface FooterLink {
@@ -167,6 +109,7 @@ export interface PageData {
   image?: File | null;
   navigation: NavigationItem[];
   components: PageComponent[];
+  promotion?: PromotionList[];
   created_at: string;
   updated_at: string;
   created_by: string;
@@ -204,5 +147,34 @@ export interface HeroCarousel {
   cta: {
     title: string;
     href: string;
+  };
+}
+
+export interface PromotionCard {
+  card: {
+    title: string;
+    description: string;
+    image: File;
+    link: {
+      title: string;
+      href: string;
+    };
+    _metadata: {
+      uid: string;
+    };
+  };
+}
+
+export interface PromotionList {
+  promotion_list: {
+    title: string;
+    title_tag: string;
+    description: string;
+    load_first_image_eager: boolean;
+    reference: any[];
+    cards: PromotionCard[];
+    _metadata: {
+      uid: string;
+    };
   };
 }
