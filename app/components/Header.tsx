@@ -20,7 +20,7 @@ export default function Header({ header }: HeaderProps) {
             <Link href="/" className="flex items-center space-x-3">
               {header?.contentstack_logo?.url ? (
                 <Image
-                  src={header?.contentstack_logo.url}
+                  src={header?.contentstack_logo.url || "/logo_gif.webp"}
                   alt={header?.title}
                   width={40}
                   height={40}

@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function Home() {
   const { header, page, loading: headerLoading } = useHeader();
 
-  const promotionData = page?.promotion && page.promotion.length > 0 ? page.promotion[0] : null;
+  const promotionData = page?.promotion || null;
 
   if (headerLoading) {
     return (

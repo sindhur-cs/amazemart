@@ -15,7 +15,7 @@ export default function Carousel({ page }: CarouselProps) {
     ? page.components
         .filter((comp: PageComponent) => comp.hero_carousel)
         .map((comp: PageComponent) => ({
-          src: comp.hero_carousel!.background_image.url,
+          src: comp.hero_carousel!.background_image?.url,
           alt: comp.hero_carousel!.title,
           title: comp.hero_carousel!.title,
           subtitle: comp.hero_carousel!.cta.title,

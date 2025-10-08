@@ -109,7 +109,7 @@ export interface PageData {
   image?: File | null;
   navigation: NavigationItem[];
   components: PageComponent[];
-  promotion?: PromotionList[];
+  promotion?: PromotionCard[];
   created_at: string;
   updated_at: string;
   created_by: string;
@@ -151,8 +151,9 @@ export interface HeroCarousel {
 }
 
 export interface PromotionCard {
-  card: {
+  promotion_card: {
     title: string;
+    title_tag: string;
     description: string;
     image: File;
     link: {
