@@ -54,13 +54,13 @@ export default function Navigation({ page }: NavigationProps) {
                   }`}
                 >
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 relative object-contain rounded-lg flex items-center justify-center">
+                    <div className="w-16 h-16 relative object-contain rounded-lg flex items-center justify-center">
                       {item.image?.url ? (
                         <Image
                           src={item.image.url}
                           alt={item.title}
-                          width={48}
-                          height={48}
+                          width={64}
+                          height={64}
                           className="w-full h-full object-contain"
                         />
                       ) : (
