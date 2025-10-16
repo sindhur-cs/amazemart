@@ -20,13 +20,7 @@ export default function PromotionGrid({ promotionData, title }: PromotionGridPro
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">
-          {title || "Spotlight Deals"}
-        </h2>
-      </div>
-
+    <div className="mx-auto px-4">
       <div className="flex flex-wrap gap-12 items-center justify-center">
         {promotionData.map((promotion) => (
           <PromotionCard key={promotion.promotion_card._metadata.uid} promotion={promotion} />
