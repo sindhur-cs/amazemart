@@ -33,12 +33,18 @@ export async function GET(
     
     const data = await response.json();
     
-    // Return the data with proper CORS headers
+    // Return the data with proper CORS headers and caching
     return NextResponse.json(data, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, api_key, access_token',
+        // Add caching headers for better performance
+        'Cache-Control': process.env.NODE_ENV === 'production' 
+          ? 'public, s-maxage=300, stale-while-revalidate=600' // 5 min cache, 10 min stale
+          : 'no-cache', // No cache in development
+        'CDN-Cache-Control': 'public, s-maxage=300',
+        'Vercel-CDN-Cache-Control': 'public, s-maxage=300',
       },
     });
   } catch (error) {

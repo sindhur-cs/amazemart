@@ -7,6 +7,21 @@ import ContentstackLivePreview, { IStackSdk } from "@contentstack/live-preview-u
 // helper functions from private package to retrieve Contentstack endpoints in a convenient way
 import { getContentstackEndpoints, getRegionForString } from "@timbenniks/contentstack-endpoints";
 
+// Helper function to fetch data via proxy
+async function fetchViaProxy(contentType: string) {
+  const baseUrl = process.env.NODE_ENV === 'development' 
+    ? '' // Relative URL for development
+    : process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com'; // Absolute URL for production
+  
+  const response = await fetch(`${baseUrl}/api/contentstack/content_types/${contentType}/entries?environment=` + encodeURIComponent(process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev'));
+  
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${contentType} data: ${response.status}`);
+  }
+  
+  return response.json();
+}
+
 // Set the region by string value from environment variables
 const region = getRegionForString(process.env.NEXT_PUBLIC_CONTENTSTACK_REGION as string)
 // object with all endpoints for region.
@@ -63,133 +78,67 @@ if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true' && typeof window !==
 }
 
 export async function getPageData() {
-  // Use proxy in development to avoid CORS issues
-  if (process.env.NODE_ENV === 'development') {
-    try {
-      const response = await fetch('/api/contentstack/content_types/page/entries?environment=' + encodeURIComponent(process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev'));
-      const result = await response.json();
+  // Use proxy for all environments to ensure consistent behavior
+  try {
+    const result = await fetchViaProxy('page');
+    
+    if (result.entries && result.entries.length > 0) {
+      const page = result.entries[0];
       
-      if (result.entries && result.entries.length > 0) {
-        const page = result.entries[0];
-        
-        if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
-          contentstack.Utils.addEditableTags(page as any, 'page', true);
-        }
-        
-        return page;
+      if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
+        contentstack.Utils.addEditableTags(page as any, 'page', true);
       }
       
-      return null;
-    } catch (error) {
-      console.error('Error fetching page data via proxy:', error);
-      return null;
-    }
-  }
-
-  // Fallback to direct SDK call in production
-  const result = await blogStack
-    .contentType("page")
-    .entry()
-    .query()
-    .find();
-
-  if (result.entries && result.entries.length > 0) {
-    const page = result.entries[0];
-    
-    if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
-      contentstack.Utils.addEditableTags(page as any, 'page', true);
+      return page;
     }
     
-    return page;
+    return null;
+  } catch (error) {
+    console.error('Error fetching page data via proxy:', error);
+    return null;
   }
-  
-  return null;
 }
 
 export async function getBlogHeader() {
-  // Use proxy in development to avoid CORS issues
-  if (process.env.NODE_ENV === 'development') {
-    try {
-      const response = await fetch('/api/contentstack/content_types/header/entries?environment=' + encodeURIComponent(process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev'));
-      const result = await response.json();
+  // Use proxy for all environments to ensure consistent behavior
+  try {
+    const result = await fetchViaProxy('header');
+    
+    if (result.entries && result.entries.length > 0) {
+      const header = result.entries[0];
       
-      if (result.entries && result.entries.length > 0) {
-        const header = result.entries[0];
-        
-        if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
-          contentstack.Utils.addEditableTags(header as any, 'header', true);
-        }
-        
-        return header;
+      if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
+        contentstack.Utils.addEditableTags(header as any, 'header', true);
       }
       
-      return null;
-    } catch (error) {
-      console.error('Error fetching header data via proxy:', error);
-      return null;
-    }
-  }
-
-  // Fallback to direct SDK call in production
-  const result = await blogStack
-    .contentType("header")
-    .entry()
-    .query()
-    .find();
-
-  if (result.entries && result.entries.length > 0) {
-    const header = result.entries[0];
-    
-    if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
-      contentstack.Utils.addEditableTags(header as any, 'header', true);
+      return header;
     }
     
-    return header;
+    return null;
+  } catch (error) {
+    console.error('Error fetching header data via proxy:', error);
+    return null;
   }
-  
-  return null;
 }
 
 export async function getBlogFooter() {
-  // Use proxy in development to avoid CORS issues
-  if (process.env.NODE_ENV === 'development') {
-    try {
-      const response = await fetch('/api/contentstack/content_types/footer/entries?environment=' + encodeURIComponent(process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev'));
-      const result = await response.json();
+  // Use proxy for all environments to ensure consistent behavior
+  try {
+    const result = await fetchViaProxy('footer');
+    
+    if (result.entries && result.entries.length > 0) {
+      const footer = result.entries[0];
       
-      if (result.entries && result.entries.length > 0) {
-        const footer = result.entries[0];
-        
-        if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
-          contentstack.Utils.addEditableTags(footer as any, 'footer', true);
-        }
-        
-        return footer;
+      if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
+        contentstack.Utils.addEditableTags(footer as any, 'footer', true);
       }
       
-      return null;
-    } catch (error) {
-      console.error('Error fetching footer data via proxy:', error);
-      return null;
-    }
-  }
-
-  // Fallback to direct SDK call in production
-  const result = await blogStack
-    .contentType("footer")
-    .entry()
-    .query()
-    .find();
-
-  if (result.entries && result.entries.length > 0) {
-    const footer = result.entries[0];
-    
-    if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
-      contentstack.Utils.addEditableTags(footer as any, 'footer', true);
+      return footer;
     }
     
-    return footer;
+    return null;
+  } catch (error) {
+    console.error('Error fetching footer data via proxy:', error);
+    return null;
   }
-  
-  return null;
 }
