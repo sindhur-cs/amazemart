@@ -9,14 +9,14 @@ export default function PromotionCard({ promotion }: PromotionCardProps) {
   const { promotion_card } = promotion;
   
   return (
-    <article className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer h-full flex flex-col">
-      <div className="relative w-48 h-48 bg-gray-50 overflow-hidden flex-shrink-0">
+    <article className="w-100 h-60 bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer h-full flex flex-col">
+      <div className="relative w-100 h-60 bg-gray-50 overflow-hidden flex-shrink-0">
         {promotion_card.image?.url ? (
           <Image
             src={promotion_card.image.url}
             alt={promotion_card.title}
             fill
-            className="object-cover hover:scale-105 transition-transform duration-300"
+            className="object-cover hover:scale-105 transition-transform duration-300 object-left"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (

@@ -33,7 +33,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-[75vh] bg-gray-50 flex justify-center items-center">
+    <main className="min-h-[60vh] bg-gray-50 flex justify-center items-center">
       <PromotionGrid
         promotionData={promotionData}
         title="Spotlight Deals"
