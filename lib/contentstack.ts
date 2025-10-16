@@ -12,6 +12,16 @@ const region = getRegionForString(process.env.NEXT_PUBLIC_CONTENTSTACK_REGION as
 // object with all endpoints for region.
 const endpoints = getContentstackEndpoints(region, true)
 
+// Debug logging for environment variables
+console.log('Contentstack Config:', {
+  apiKey: process.env.NEXT_PUBLIC_CONTENTSTACK_API_KEY ? 'Set' : 'Missing',
+  deliveryToken: process.env.NEXT_PUBLIC_CONTENTSTACK_DELIVERY_TOKEN ? 'Set' : 'Missing',
+  environment: process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT,
+  region: process.env.NEXT_PUBLIC_CONTENTSTACK_REGION,
+  contentDelivery: process.env.NEXT_PUBLIC_CONTENTSTACK_CONTENT_DELIVERY,
+  branch: process.env.NEXT_PUBLIC_CONTENTSTACK_BRANCH
+});
+
 // BlogStack for page data, navigation, carousel, and promotions
 export const blogStack = contentstack.stack({
   // Setting the API key from environment variables
@@ -27,9 +37,13 @@ export const blogStack = contentstack.stack({
   region: region ? region : process.env.NEXT_PUBLIC_CONTENTSTACK_REGION as any,
 
   // Setting the host for content delivery based on the region or environment variables
-  host: process.env.NEXT_PUBLIC_CONTENTSTACK_CONTENT_DELIVERY || endpoints && endpoints.contentDelivery,
+  host: process.env.NEXT_PUBLIC_CONTENTSTACK_CONTENT_DELIVERY || (endpoints && endpoints.contentDelivery),
 
   branch: process.env.NEXT_PUBLIC_CONTENTSTACK_BRANCH as string,
+  
+  // Add retry configuration for better reliability
+  retryDelay: 1000,
+  retryLimit: 3,
   
   live_preview: {
     // Enabling live preview if specified in environment variables
@@ -39,7 +53,7 @@ export const blogStack = contentstack.stack({
     preview_token: process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_TOKEN,
 
     // Setting the host for live preview based on the region
-    host: process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_HOST || endpoints && endpoints.preview
+    host: process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW_HOST || (endpoints && endpoints.preview)
   }
 });
 
@@ -65,61 +79,76 @@ if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true' && typeof window !==
 }
 
 export async function getPageData() {
-  const result = await blogStack
-    .contentType("page")
-    .entry()
-    .query()
-    .find();
+  try {
+    const result = await blogStack
+      .contentType("page")
+      .entry()
+      .query()
+      .find();
 
-  if (result.entries && result.entries.length > 0) {
-    const page = result.entries[0];
-    
-    if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
-      contentstack.Utils.addEditableTags(page as any, 'page', true);
+    if (result.entries && result.entries.length > 0) {
+      const page = result.entries[0];
+      
+      if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
+        contentstack.Utils.addEditableTags(page as any, 'page', true);
+      }
+      
+      return page;
     }
     
-    return page;
+    return null;
+  } catch (error) {
+    console.error('Error fetching page data:', error);
+    return null;
   }
-  
-  return null;
 }
 
 export async function getBlogHeader() {
-  const result = await blogStack
-    .contentType("header")
-    .entry()
-    .query()
-    .find();
+  try {
+    const result = await blogStack
+      .contentType("header")
+      .entry()
+      .query()
+      .find();
 
-  if (result.entries && result.entries.length > 0) {
-    const header = result.entries[0];
-    
-    if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
-      contentstack.Utils.addEditableTags(header as any, 'header', true);
+    if (result.entries && result.entries.length > 0) {
+      const header = result.entries[0];
+      
+      if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
+        contentstack.Utils.addEditableTags(header as any, 'header', true);
+      }
+      
+      return header;
     }
     
-    return header;
+    return null;
+  } catch (error) {
+    console.error('Error fetching header data:', error);
+    return null;
   }
-  
-  return null;
 }
 
 export async function getBlogFooter() {
-  const result = await blogStack
-    .contentType("footer")
-    .entry()
-    .query()
-    .find();
+  try {
+    const result = await blogStack
+      .contentType("footer")
+      .entry()
+      .query()
+      .find();
 
-  if (result.entries && result.entries.length > 0) {
-    const footer = result.entries[0];
-    
-    if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
-      contentstack.Utils.addEditableTags(footer as any, 'footer', true);
+    if (result.entries && result.entries.length > 0) {
+      const footer = result.entries[0];
+      
+      if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true') {
+        contentstack.Utils.addEditableTags(footer as any, 'footer', true);
+      }
+      
+      return footer;
     }
     
-    return footer;
+    return null;
+  } catch (error) {
+    console.error('Error fetching footer data:', error);
+    return null;
   }
-  
-  return null;
 }
