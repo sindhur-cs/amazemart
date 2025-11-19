@@ -44,7 +44,7 @@ export const blogStack = contentstack.stack({
   // Setting the host for content delivery based on the region or environment variables
   host: process.env.NEXT_PUBLIC_CONTENTSTACK_CONTENT_DELIVERY || endpoints && endpoints.contentDelivery,
 
-  branch: process.env.NEXT_PUBLIC_CONTENTSTACK_BRANCH as string,
+  //branch: process.env.NEXT_PUBLIC_CONTENTSTACK_BRANCH as string,
 
   live_preview: {
     // Enabling live preview if specified in environment variables
