@@ -8,9 +8,11 @@ const nextConfig = {
         : [
             { hostname: "images.contentstack.io" },
             { hostname: "*-images.contentstack.com" },
+            { hostname: "am-api.contentstack.com" },
             { hostname: "dev9-images.csnonprod.com" },
             { hostname: "dev9-assets.csnonprod.com" },
             { hostname: "dev9-dam-assets.csnonprod.com" },
+            { hostname: "stag-images.csnonprod.com" },
           ]),
     ],
   },

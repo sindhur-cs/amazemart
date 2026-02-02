@@ -27,7 +27,7 @@ export default function Footer({ footer, currentPath }: FooterProps) {
             <div className="flex items-center space-x-3">
               {footer?.contentstack_logo?.url ? (
                 <Image
-                  src={footer?.contentstack_logo.url}
+                  src={`${footer?.contentstack_logo.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`}
                   alt={footer?.title}
                   width={40}
                   height={40}

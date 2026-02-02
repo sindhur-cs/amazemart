@@ -36,59 +36,44 @@ export default function Navigation({ page }: NavigationProps) {
   }
 
   return (
-    <div className="bg-gray-50 py-10 border-b border-gray-100">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="flex items-center justify-center divide-x divide-gray-100">
-            {navigationItems.map((item) => {
-                  const isActive = pathname === item.href || (item.href === '/' && pathname === '/');
-              
-              return (
-                <Link
-                  key={item.key}
-                  href={item.href}
-                  className={`flex-1 flex items-center justify-center p-6 transition-colors duration-200 relative ${
-                    isActive 
-                      ? 'bg-purple-50' 
-                      : 'hover:bg-gray-50'
-                  }`}
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="w-16 h-16 relative object-contain rounded-lg flex items-center justify-center">
-                      {item.image?.url ? (
-                        <Image
-                          src={item.image.url}
-                          alt={item.title}
-                          width={64}
-                          height={64}
-                          className="w-full h-full object-contain"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-purple-500 flex items-center justify-center">
-                          <span className="text-white font-bold">
-                            {item.title.charAt(0)}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="flex flex-col">
-                      <span className={`font-medium text-base ${
-                        isActive ? 'text-purple-700' : 'text-gray-900'
-                      }`}>
-                        {item.title}
-                      </span>
-                      <span className={`text-sm ${
-                        isActive ? 'text-purple-600' : 'text-gray-500'
-                      }`}>
-                        Explore {item.title.toLowerCase()}
+    <div className="bg-gray-50 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-start justify-between">
+          {navigationItems.map((item) => {
+            const isActive = pathname === item.href || (item.href === '/' && pathname === '/');
+            
+            return (
+              <Link
+                key={item.key}
+                href={item.href}
+                className="flex flex-col items-center group transition-transform duration-200 hover:-translate-y-1"
+              >
+                <div className="w-20 h-20 bg-gray-100 rounded-2xl p-2 flex items-center justify-center mb-2 group-hover:shadow-md transition-shadow duration-200">
+                  {item.image?.url ? (
+                    <Image
+                      src={`${item.image.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`}
+                      alt={item.title}
+                      width={64}
+                      height={64}
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-purple-500 rounded-xl flex items-center justify-center">
+                      <span className="text-white font-bold text-lg">
+                        {item.title.charAt(0)}
                       </span>
                     </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+                  )}
+                </div>
+                
+                <span className={`font-medium text-xs text-center max-w-[80px] leading-tight ${
+                  isActive ? 'text-purple-700' : 'text-gray-700'
+                }`}>
+                  {item.title}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

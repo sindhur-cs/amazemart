@@ -9,7 +9,7 @@ export async function GET(
     const { searchParams } = new URL(request.url);
     
     // Construct the Contentstack API URL
-    const baseUrl = 'https://dev9-cdn.csnonprod.com/v3';
+    const baseUrl = process.env.NEXT_PUBLIC_CONTENTSTACK_BASE_URL || 'https://dev9-cdn.csnonprod.com/v3';
     const pathString = path.join('/');
     const queryString = searchParams.toString();
     const apiUrl = `${baseUrl}/${pathString}?${queryString}`;
