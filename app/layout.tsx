@@ -3,6 +3,7 @@
 import "./globals.css";
 import Header from "./components/Header";
 import Navigation from "./components/Navigation";
+import CompactNavigation from "./components/CompactNavigation";
 import Carousel from "./components/Carousel";
 import Footer from "./components/Footer";
 import HeaderProvider, { useHeader } from "./components/HeaderProvider";
@@ -12,13 +13,14 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
   const { header, footer, page, loading } = useHeader();
   const pathname = usePathname();
 
-  const shouldShowCarousel = pathname === '/';
+  const isHomePage = pathname === '/';
 
   return (
     <>
           {!loading && <Header header={header} />}
-          {!loading && <Navigation page={page} />}
-          {!loading && shouldShowCarousel && <Carousel page={page} />}
+          {!loading && isHomePage && <Navigation page={page} />}
+          {!loading && !isHomePage && <CompactNavigation page={page} />}
+          {!loading && isHomePage && <Carousel page={page} />}
           {children}
           {!loading && <Footer footer={footer} currentPath={pathname} />}
     </>

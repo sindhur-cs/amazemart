@@ -179,3 +179,76 @@ export interface PromotionList {
     };
   };
 }
+
+// Gallery/Launch types
+export interface VisualMarkupCoordinates {
+  x: number;      // X position in pixels
+  y: number;      // Y position in pixels
+  height?: number; // Height for BoundingBox type
+  width?: number;  // Width for BoundingBox type
+}
+
+export interface VisualMarkup {
+  id: string;
+  type: "Hotspot" | "BoundingBox";
+  title: string;
+  description: string;
+  url?: string;   // Optional video URL
+  coordinates: VisualMarkupCoordinates;
+  asset_uid?: string;  // Reference to the image this markup belongs to
+}
+
+export interface GalleryImage {
+  uid: string;
+  _version: number;
+  title: string;
+  description: string;
+  parent_uid: string;
+  filename: string;
+  url: string;
+  is_dir: boolean;
+  created_at: string;
+  created_by: string;
+  file_size: string;
+  content_type: string;
+  tags: string[];
+  locale: string;
+  ACL: any;
+  publish_details: PublishDetails;
+  visual_markups?: VisualMarkup[] | Record<string, VisualMarkup[]>;
+  dimension?: {
+    width: number;
+    height: number;
+  };
+}
+
+// Visual markups can be stored as object keyed by asset UID
+export type VisualMarkupsMap = Record<string, VisualMarkup[]>;
+
+export interface GalleryEntry {
+  uid: string;
+  locale: string;
+  _version: number;
+  title: string;
+  description: string;
+  launch_id: string;
+  url: string;
+  gallery: {
+    gallery_images: GalleryImage[];
+  };
+  spinset?: {
+    spinsetimages: any[];
+  };
+  tags: string[];
+  created_at: string;
+  created_by: string;
+  updated_at: string;
+  updated_by: string;
+  publish_details: PublishDetails;
+  visual_markups?: VisualMarkup[];  // Visual markups at entry level with asset_uid references
+}
+
+export interface GalleryListResponse {
+  entries: GalleryEntry[];
+  count: number;
+}

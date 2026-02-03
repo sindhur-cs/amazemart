@@ -144,3 +144,43 @@ export async function getBlogFooter() {
     return null;
   }
 }
+
+// Fetch all gallery/launch entries
+export async function getGalleryEntries() {
+  try {
+    const result = await fetchViaProxy('gallery_page');
+    
+    if (result.entries && result.entries.length > 0) {
+      return result.entries;
+    }
+    
+    return [];
+  } catch (error) {
+    console.error('Error fetching gallery entries via proxy:', error);
+    return [];
+  }
+}
+
+// Fetch a single gallery/launch entry by UID
+export async function getGalleryEntryByUid(uid: string) {
+  try {
+    const baseUrl = process.env.NODE_ENV === 'development' 
+      ? '' 
+      : process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com';
+    
+    const environment = process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev';
+    const response = await fetch(
+      `${baseUrl}/api/contentstack/content_types/gallery_page/entries/${uid}?environment=${encodeURIComponent(environment)}&locale=en-us&asset_fields[]=visual_markups`
+    );
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch gallery entry: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    return result.entry || null;
+  } catch (error) {
+    console.error('Error fetching gallery entry by UID:', error);
+    return null;
+  }
+}
