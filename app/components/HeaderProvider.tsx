@@ -4,11 +4,24 @@ import { Header as HeaderType, Footer as FooterType, PageData as PageType } from
 import { getBlogHeader, getBlogFooter, getPageData } from "@/lib/contentstack";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
+export interface LocaleOption {
+  code: string;
+  label: string;
+}
+
+export const localeOptions: LocaleOption[] = [
+  { code: "en-us", label: "English (US)" },
+  { code: "fr-fr", label: "Français (FR)" },
+  { code: "es-es", label: "Español (ES)" },
+];
+
 interface HeaderContextType {
   header: HeaderType | null;
   footer: FooterType | null;
   page: PageType | null;
   loading: boolean;
+  locale: string;
+  setLocale: (locale: string) => void;
 }
 
 const HeaderContext = createContext<HeaderContextType>({
@@ -16,6 +29,8 @@ const HeaderContext = createContext<HeaderContextType>({
   footer: null,
   page: null,
   loading: true,
+  locale: "en-us",
+  setLocale: () => {},
 });
 
 export const useHeader = () => useContext(HeaderContext);
@@ -29,6 +44,7 @@ export default function HeaderProvider({ children }: HeaderProviderProps) {
   const [footer, setFooter] = useState<FooterType | null>(null);
   const [page, setPage] = useState<PageType | null>(null);
   const [loading, setLoading] = useState(true);
+  const [locale, setLocale] = useState("en-us");
 
   useEffect(() => {
     const loadData = async () => {
@@ -36,9 +52,9 @@ export default function HeaderProvider({ children }: HeaderProviderProps) {
         setLoading(true);
         
         const [headerData, footerData, pageData] = await Promise.all([
-          getBlogHeader(),
-          getBlogFooter(),
-          getPageData(),
+          getBlogHeader(locale),
+          getBlogFooter(locale),
+          getPageData(locale),
         ]);
 
         setHeader(headerData as HeaderType);
@@ -52,13 +68,15 @@ export default function HeaderProvider({ children }: HeaderProviderProps) {
     };
 
     loadData();
-  }, []);
+  }, [locale]);
 
   const value: HeaderContextType = {
     header,
     footer,
     page,
     loading,
+    locale,
+    setLocale,
   };
 
   return (

@@ -8,12 +8,13 @@ import ContentstackLivePreview, { IStackSdk } from "@contentstack/live-preview-u
 import { getContentstackEndpoints, getRegionForString } from "@timbenniks/contentstack-endpoints";
 
 // Helper function to fetch data via proxy
-async function fetchViaProxy(contentType: string) {
+async function fetchViaProxy(contentType: string, locale: string = 'en-us') {
   const baseUrl = process.env.NODE_ENV === 'development' 
     ? '' // Relative URL for development
     : process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com'; // Absolute URL for production
   
-  const response = await fetch(`${baseUrl}/api/contentstack/content_types/${contentType}/entries?environment=` + encodeURIComponent(process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev'));
+  const environment = encodeURIComponent(process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev');
+  const response = await fetch(`${baseUrl}/api/contentstack/content_types/${contentType}/entries?environment=${environment}&locale=${locale}&include_fallback=true`);
   
   if (!response.ok) {
     throw new Error(`Failed to fetch ${contentType} data: ${response.status}`);
@@ -79,10 +80,10 @@ if (process.env.NEXT_PUBLIC_CONTENTSTACK_PREVIEW === 'true' && typeof window !==
   });
 }
 
-export async function getPageData() {
+export async function getPageData(locale: string = 'en-us') {
   // Use proxy for all environments to ensure consistent behavior
   try {
-    const result = await fetchViaProxy('page');
+    const result = await fetchViaProxy('page', locale);
     
     if (result.entries && result.entries.length > 0) {
       const page = result.entries[0];
@@ -101,10 +102,10 @@ export async function getPageData() {
   }
 }
 
-export async function getBlogHeader() {
+export async function getBlogHeader(locale: string = 'en-us') {
   // Use proxy for all environments to ensure consistent behavior
   try {
-    const result = await fetchViaProxy('header');
+    const result = await fetchViaProxy('header', locale);
     
     if (result.entries && result.entries.length > 0) {
       const header = result.entries[0];
@@ -123,10 +124,10 @@ export async function getBlogHeader() {
   }
 }
 
-export async function getBlogFooter() {
+export async function getBlogFooter(locale: string = 'en-us') {
   // Use proxy for all environments to ensure consistent behavior
   try {
-    const result = await fetchViaProxy('footer');
+    const result = await fetchViaProxy('footer', locale);
     
     if (result.entries && result.entries.length > 0) {
       const footer = result.entries[0];
@@ -146,9 +147,9 @@ export async function getBlogFooter() {
 }
 
 // Fetch all gallery/launch entries
-export async function getGalleryEntries() {
+export async function getGalleryEntries(locale: string = 'en-us') {
   try {
-    const result = await fetchViaProxy('gallery_page');
+    const result = await fetchViaProxy('gallery_page', locale);
     
     if (result.entries && result.entries.length > 0) {
       return result.entries;
@@ -162,7 +163,7 @@ export async function getGalleryEntries() {
 }
 
 // Fetch a single gallery/launch entry by UID
-export async function getGalleryEntryByUid(uid: string) {
+export async function getGalleryEntryByUid(uid: string, locale: string = 'en-us') {
   try {
     const baseUrl = process.env.NODE_ENV === 'development' 
       ? '' 
@@ -170,7 +171,7 @@ export async function getGalleryEntryByUid(uid: string) {
     
     const environment = process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev';
     const response = await fetch(
-      `${baseUrl}/api/contentstack/content_types/gallery_page/entries/${uid}?environment=${encodeURIComponent(environment)}&locale=en-us&asset_fields[]=visual_markups`
+      `${baseUrl}/api/contentstack/content_types/gallery_page/entries/${uid}?environment=${encodeURIComponent(environment)}&locale=${locale}&include_fallback=true&asset_fields[]=visual_markups`
     );
     
     if (!response.ok) {

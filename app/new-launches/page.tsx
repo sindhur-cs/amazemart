@@ -5,15 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { getGalleryEntries } from "@/lib/contentstack";
 import { GalleryEntry } from "@/lib/types";
+import { useHeader } from "../components/HeaderProvider";
 
 export default function NewLaunchesPage() {
   const [launches, setLaunches] = useState<GalleryEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const { locale } = useHeader();
 
   useEffect(() => {
     async function fetchLaunches() {
       try {
-        const entries = await getGalleryEntries();
+        setLoading(true);
+        const entries = await getGalleryEntries(locale);
         setLaunches(entries);
       } catch (error) {
         console.error("Error fetching launches:", error);
@@ -23,7 +26,7 @@ export default function NewLaunchesPage() {
     }
 
     fetchLaunches();
-  }, []);
+  }, [locale]);
 
   if (loading) {
     return (

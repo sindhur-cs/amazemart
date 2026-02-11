@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { getGalleryEntryByUid } from "@/lib/contentstack";
 import { GalleryEntry, VisualMarkup } from "@/lib/types";
+import { useHeader } from "../../components/HeaderProvider";
 
 interface ActiveHotspot {
   imageIndex: number;
@@ -19,6 +20,7 @@ interface ImageDimensions {
 export default function LaunchItemDetailPage() {
   const params = useParams();
   const launchItemId = params.launchItemId as string;
+  const { locale } = useHeader();
   
   const [launch, setLaunch] = useState<GalleryEntry | null>(null);
   const [loading, setLoading] = useState(true);
@@ -36,7 +38,8 @@ export default function LaunchItemDetailPage() {
   useEffect(() => {
     async function fetchLaunchDetails() {
       try {
-        const entry = await getGalleryEntryByUid(launchItemId);
+        setLoading(true);
+        const entry = await getGalleryEntryByUid(launchItemId, locale);
         setLaunch(entry);
       } catch (error) {
         console.error("Error fetching launch details:", error);
@@ -48,7 +51,7 @@ export default function LaunchItemDetailPage() {
     if (launchItemId) {
       fetchLaunchDetails();
     }
-  }, [launchItemId]);
+  }, [launchItemId, locale]);
 
   // Handle image load to get natural dimensions
   const handleImageLoad = (index: number, event: React.SyntheticEvent<HTMLImageElement>) => {
