@@ -194,11 +194,27 @@ export default function LaunchItemDetailPage() {
                 {/* Use regular img tag to get natural dimensions */}
                 <img
                   src={`${image.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`}
-                  alt={image.title || `${launch.title} - Image ${index + 1}`}
+                  alt={image.description || image.title || `${launch.title} - Image ${index + 1}`}
                   className="w-full h-auto"
                   loading={index === 0 ? "eager" : "lazy"}
                   onLoad={(e) => handleImageLoad(index, e)}
                 />
+                
+                {/* Alt Text Overlay at bottom of image */}
+                {(image.title || image.description) && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent pt-16 pb-6 px-6">
+                    {image.title && (
+                      <h3 className="text-white font-semibold text-lg mb-1">
+                        {image.title.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                      </h3>
+                    )}
+                    {image.description && (
+                      <p className="text-gray-200 text-sm leading-relaxed">
+                        {image.description}
+                      </p>
+                    )}
+                  </div>
+                )}
                 
                 {/* Hotspots - Only render when image dimensions are loaded */}
                 {hotspotsVisible && hasDimensions && imageMarkups.length > 0 && (
