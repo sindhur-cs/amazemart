@@ -1,6 +1,7 @@
 "use client";
 
 import { Header as HeaderType } from "@/lib/types";
+import { fixImageUrl } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -26,7 +27,7 @@ export default function Header({ header }: HeaderProps) {
             <Link href="/" className="flex items-center space-x-3">
               {header?.contentstack_logo?.url ? (
                 <Image
-                  src={`${header.contentstack_logo.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`}
+                  src={fixImageUrl(`${header.contentstack_logo.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
                   alt={header?.title}
                   width={220}
                   height={80}

@@ -2,6 +2,7 @@
 
 import PromotionGrid from "./components/PromotionGrid";
 import { useHeader } from "./components/HeaderProvider";
+import { fixImageUrl } from "@/lib/utils";
 import Image from "next/image";
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
           <div className="text-center">
             <div className="relative mx-auto mb-4 w-16 h-16">
               <Image
-                src={header?.contentstack_logo?.url ? `${header.contentstack_logo.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}` : "/logo_gif.webp"}
+                src={header?.contentstack_logo?.url ? fixImageUrl(`${header.contentstack_logo.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`) : "/logo_gif.webp"}
                 alt="Loading..."
                 width={64}
                 height={64}

@@ -185,3 +185,43 @@ export async function getGalleryEntryByUid(uid: string, locale: string = 'en-us'
     return null;
   }
 }
+
+// Fetch a single product entry by UID
+export async function getProductByUid(uid: string, locale: string = 'en-us') {
+  try {
+    const baseUrl = process.env.NODE_ENV === 'development' 
+      ? '' 
+      : process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com';
+    
+    const environment = process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev';
+    const response = await fetch(
+      `${baseUrl}/api/contentstack/content_types/product/entries/${uid}?environment=${encodeURIComponent(environment)}&locale=${locale}&include_fallback=true&asset_fields[]=user_defined_fields&asset_fields[]=visual_markups`
+    );
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch product entry: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    return result.entry || null;
+  } catch (error) {
+    console.error('Error fetching product by UID:', error);
+    return null;
+  }
+}
+
+// Fetch all products
+export async function getProducts(locale: string = 'en-us') {
+  try {
+    const result = await fetchViaProxy('product', locale);
+    
+    if (result.entries && result.entries.length > 0) {
+      return result.entries;
+    }
+    
+    return [];
+  } catch (error) {
+    console.error('Error fetching products via proxy:', error);
+    return [];
+  }
+}

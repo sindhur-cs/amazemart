@@ -1,6 +1,7 @@
 "use client";
 
 import { PageData as PageType, NavigationItem } from "@/lib/types";
+import { fixImageUrl } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -51,7 +52,7 @@ export default function Navigation({ page }: NavigationProps) {
                 <div className="w-20 h-20 bg-gray-100 rounded-2xl p-2 flex items-center justify-center mb-2 group-hover:shadow-md transition-shadow duration-200">
                   {item.image?.url ? (
                     <Image
-                      src={`${item.image.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`}
+                      src={fixImageUrl(`${item.image.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
                       alt={item.title}
                       width={64}
                       height={64}

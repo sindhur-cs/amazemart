@@ -1,4 +1,5 @@
 import { PromotionCard as PromotionCardType } from "@/lib/types";
+import { fixImageUrl } from "@/lib/utils";
 import Image from "next/image";
 
 interface PromotionCardProps {
@@ -12,7 +13,7 @@ export default function PromotionCard({ promotion }: PromotionCardProps) {
     <article className="group relative flex-shrink-0 w-[300px] h-[130px] rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer transform hover:-translate-y-1">
       {promotion_card.image?.url ? (
         <Image
-          src={`${promotion_card.image.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`}
+          src={fixImageUrl(`${promotion_card.image.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
           alt={promotion_card.title}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"

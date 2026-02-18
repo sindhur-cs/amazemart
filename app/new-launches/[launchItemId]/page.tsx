@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { getGalleryEntryByUid } from "@/lib/contentstack";
+import { fixImageUrl } from "@/lib/utils";
 import { GalleryEntry, VisualMarkup } from "@/lib/types";
 import { useHeader } from "../../components/HeaderProvider";
 
@@ -193,7 +194,7 @@ export default function LaunchItemDetailPage() {
               <div className="relative w-full">
                 {/* Use regular img tag to get natural dimensions */}
                 <img
-                  src={`${image.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`}
+                  src={fixImageUrl(`${image.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
                   alt={image.description || image.title || `${launch.title} - Image ${index + 1}`}
                   className="w-full h-auto"
                   loading={index === 0 ? "eager" : "lazy"}
@@ -290,7 +291,7 @@ export default function LaunchItemDetailPage() {
                             <div className="relative rounded-lg overflow-hidden bg-black">
                               <video
                                 ref={videoRef}
-                                src={selectedHotspot.hotspot.url}
+                                src={fixImageUrl(selectedHotspot.hotspot.url)}
                                 controls
                                 autoPlay
                                 className="w-full h-auto max-h-40"

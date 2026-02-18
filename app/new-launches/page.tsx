@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { getGalleryEntries } from "@/lib/contentstack";
+import { fixImageUrl } from "@/lib/utils";
 import { GalleryEntry } from "@/lib/types";
 import { useHeader } from "../components/HeaderProvider";
 
@@ -75,7 +76,7 @@ export default function NewLaunchesPage() {
                 <div className="relative h-56 bg-gray-200 overflow-hidden">
                   {thumbnailImage?.url ? (
                     <Image
-                      src={`${thumbnailImage.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`}
+                      src={fixImageUrl(`${thumbnailImage.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
                       alt={launch.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
