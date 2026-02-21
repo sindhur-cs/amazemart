@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { PageData as PageType, PageComponent } from "@/lib/types";
+import { fixImageUrl } from "@/lib/utils";
 
 interface CarouselProps {
   page: PageType | null;
@@ -15,7 +16,7 @@ export default function Carousel({ page }: CarouselProps) {
     ? page.components
         .filter((comp: PageComponent) => comp.hero_carousel)
         .map((comp: PageComponent) => ({
-          src: `${comp.hero_carousel!.background_image?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`,
+          src: fixImageUrl(`${comp.hero_carousel!.background_image?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`),
           alt: comp.hero_carousel!.title,
           title: comp.hero_carousel!.title,
           subtitle: comp.hero_carousel!.cta.title,

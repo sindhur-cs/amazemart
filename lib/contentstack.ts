@@ -225,3 +225,29 @@ export async function getProducts(locale: string = 'en-us') {
     return [];
   }
 }
+
+// Fetch products by category
+export async function getProductsByCategory(category: string, locale: string = 'en-us') {
+  try {
+    const baseUrl = process.env.NODE_ENV === 'development' 
+      ? '' 
+      : process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com';
+    
+    const environment = process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev';
+    const query = JSON.stringify({ product_category: category });
+    
+    const response = await fetch(
+      `${baseUrl}/api/contentstack/content_types/product/entries?environment=${encodeURIComponent(environment)}&locale=${locale}&include_fallback=true&query=${encodeURIComponent(query)}`
+    );
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch products by category: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    return result.entries || [];
+  } catch (error) {
+    console.error('Error fetching products by category:', error);
+    return [];
+  }
+}

@@ -31,7 +31,7 @@ export default function Header({ header }: HeaderProps) {
                   alt={header?.title}
                   width={220}
                   height={80}
-                  className="w-auto h-14"
+                  className="w-auto h-8"
                 />
               ) : (
                 <div className="w-8 h-8 bg-purple-600 rounded flex items-center justify-center">

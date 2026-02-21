@@ -194,7 +194,7 @@ export default function ProductDetailPage() {
               {/* Main Image */}
               <div className="relative bg-white border border-gray-200 rounded-lg overflow-hidden mb-4">
                 <img
-                  src={fixImageUrl(mainImage?.url)}
+                  src={fixImageUrl(`${mainImage?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
                   alt={mainImage?.title || product.title}
                   className="w-full h-auto object-contain"
                 />
@@ -223,7 +223,7 @@ export default function ProductDetailPage() {
                     onClick={() => setSelectedImageIndex(index)}
                   >
                     <img
-                      src={fixImageUrl(img.url)}
+                      src={fixImageUrl(`${img.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
                       alt={img.title || product.title}
                       className="w-full h-full object-cover"
                     />
@@ -304,7 +304,7 @@ export default function ProductDetailPage() {
                       }`}
                     >
                       <img
-                        src={fixImageUrl(color.image?.url)}
+                        src={fixImageUrl(`${color.image?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
                         alt={color.title}
                         className="w-full h-full object-cover"
                       />
@@ -486,7 +486,7 @@ function ProductBenefits({ description }: { description: string }) {
           >
             <div className="flex-shrink-0 w-12 h-12 bg-white rounded-lg shadow-sm flex items-center justify-center">
               <img 
-                src={fixImageUrl(benefit.icon)} 
+                src={fixImageUrl(`${benefit.icon}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)} 
                 alt={benefit.title}
                 className="w-8 h-8 object-contain"
               />

@@ -26,7 +26,7 @@ export default function Navigation({ page }: NavigationProps) {
     })
     .map((item: NavigationItem) => ({
       title: item.navigation.title,
-      href: item.navigation.url,
+      href: `/products?category=${encodeURIComponent(item.navigation.title)}`,
       image: item.navigation.image,
       key: item.navigation._metadata.uid,
       order: item.navigation.order
@@ -41,7 +41,7 @@ export default function Navigation({ page }: NavigationProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-start justify-between">
           {navigationItems.map((item) => {
-            const isActive = pathname === item.href || (item.href === '/' && pathname === '/');
+            const isActive = pathname === '/products' && item.href.includes(encodeURIComponent(item.title));
             
             return (
               <Link
@@ -56,7 +56,7 @@ export default function Navigation({ page }: NavigationProps) {
                       alt={item.title}
                       width={64}
                       height={64}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain rounded-xl"
                     />
                   ) : (
                     <div className="w-full h-full bg-purple-500 rounded-xl flex items-center justify-center">
