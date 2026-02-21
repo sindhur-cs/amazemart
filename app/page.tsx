@@ -1,6 +1,7 @@
 "use client";
 
 import PromotionGrid from "./components/PromotionGrid";
+import LatestLaunches from "./components/LatestLaunches";
 import { useHeader } from "./components/HeaderProvider";
 import { fixImageUrl } from "@/lib/utils";
 import Image from "next/image";
@@ -35,6 +36,7 @@ export default function Home() {
 
   return (
     <main className="bg-gray-50">
+      <LatestLaunches />
       <PromotionGrid
         promotionData={promotionData}
         title="Spotlight Deals"
