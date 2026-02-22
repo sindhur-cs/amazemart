@@ -18,7 +18,7 @@ export default function Home() {
           <div className="text-center">
             <div className="relative mx-auto mb-4 w-16 h-16">
               <Image
-                src={header?.contentstack_logo?.url ? fixImageUrl(`${header.contentstack_logo.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`) : "/logo_gif.webp"}
+                src={header?.contentstack_logo?.url ? fixImageUrl(`${header.contentstack_logo.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`) : "/Ridge and Rover Icon.png"}
                 alt="Loading..."
                 width={64}
                 height={64}
@@ -26,8 +26,8 @@ export default function Home() {
                 priority
               />
             </div>
-            <h2 className="text-xl font-semibold text-gray-700">Loading Promotions...</h2>
-            <p className="text-gray-500 mt-2">Please wait while we fetch the latest deals</p>
+            <h2 className="text-xl font-semibold text-gray-700">Loading Products...</h2>
+            <p className="text-gray-500 mt-2">Please wait while we fetch the products and latest deals</p>
           </div>
         </div>
       </main>
