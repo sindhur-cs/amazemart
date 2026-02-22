@@ -194,7 +194,7 @@ export default function LaunchItemDetailPage() {
               <div className="relative w-full">
                 {/* Use regular img tag to get natural dimensions */}
                 <img
-                  src={fixImageUrl(`${image.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
+                  src={fixImageUrl(`${image.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}&locale=${locale}`)}
                   alt={image.description || image.title || `${launch.title} - Image ${index + 1}`}
                   className="w-full h-auto"
                   loading={index === 0 ? "eager" : "lazy"}
@@ -291,7 +291,7 @@ export default function LaunchItemDetailPage() {
                             <div className="relative rounded-lg overflow-hidden bg-black">
                               <video
                                 ref={videoRef}
-                                src={fixImageUrl(selectedHotspot.hotspot.url)}
+                                src={fixImageUrl(`${selectedHotspot.hotspot.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}&locale=${locale}`)}
                                 controls
                                 autoPlay
                                 className="w-full h-auto max-h-40"

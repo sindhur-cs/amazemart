@@ -194,7 +194,7 @@ export default function ProductDetailPage() {
               {/* Main Image */}
               <div className="relative bg-white border border-gray-200 rounded-lg overflow-hidden mb-4">
                 <img
-                  src={fixImageUrl(`${mainImage?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
+                  src={fixImageUrl(`${mainImage?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}&locale=${locale}`)}
                   alt={mainImage?.title || product.title}
                   className="w-full h-auto object-contain"
                 />
@@ -223,7 +223,7 @@ export default function ProductDetailPage() {
                     onClick={() => setSelectedImageIndex(index)}
                   >
                     <img
-                      src={fixImageUrl(`${img.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
+                      src={fixImageUrl(`${img.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}&locale=${locale}`)}
                       alt={img.title || product.title}
                       className="w-full h-full object-cover"
                     />
@@ -304,7 +304,7 @@ export default function ProductDetailPage() {
                       }`}
                     >
                       <img
-                        src={fixImageUrl(`${color.image?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
+                        src={fixImageUrl(`${color.image?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}&locale=${locale}`)}
                         alt={color.title}
                         className="w-full h-full object-cover"
                       />
