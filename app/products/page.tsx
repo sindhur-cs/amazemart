@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getProductsByCategory, getProducts } from "@/lib/contentstack";
 import { fixImageUrl } from "@/lib/utils";
 import { useHeader } from "../components/HeaderProvider";
+import { getProductMessages } from "@/lib/i18n/product";
 
 interface ProductImage {
   uid: string;

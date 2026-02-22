@@ -6,6 +6,7 @@ import Link from "next/link";
 import { getProductByUid } from "@/lib/contentstack";
 import { fixImageUrl } from "@/lib/utils";
 import { useHeader } from "../../components/HeaderProvider";
+import { getProductMessages, formatPayLater } from "@/lib/i18n/product";
 
 interface VisualMarkup {
   id: string;
@@ -76,6 +77,7 @@ export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.productId as string;
   const { locale } = useHeader();
+  const t = getProductMessages(locale);
 
   const [product, setProduct] = useState<ProductEntry | null>(null);
   const [loading, setLoading] = useState(true);
@@ -123,7 +125,7 @@ export default function ProductDetailPage() {
       <main className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading product...</p>
+          <p className="mt-4 text-gray-600">{t.loadingProduct}</p>
         </div>
       </main>
     );
@@ -135,8 +137,8 @@ export default function ProductDetailPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center py-12">
             <div className="text-6xl mb-4">😕</div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Product Not Found</h2>
-            <p className="text-gray-600 mb-6">The product you&apos;re looking for doesn&apos;t exist.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t.productNotFound}</h2>
+            <p className="text-gray-600 mb-6">{t.productNotFoundDescription}</p>
             <Link
               href="/"
               className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
@@ -144,7 +146,7 @@ export default function ProductDetailPage() {
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to Home
+              {t.backToHome}
             </Link>
           </div>
         </div>
@@ -170,9 +172,9 @@ export default function ProductDetailPage() {
       <div className="bg-gray-50 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <nav className="flex items-center space-x-2 text-sm">
-            <Link href="/" className="text-gray-500 hover:text-blue-600">Home</Link>
+            <Link href="/" className="text-gray-500 hover:text-blue-600">{t.home}</Link>
             <span className="text-gray-400">&gt;</span>
-            <span className="text-blue-600">{product.product_category || 'Products'}</span>
+            <span className="text-blue-600">{product.product_category || t.products}</span>
           </nav>
         </div>
       </div>
@@ -186,18 +188,23 @@ export default function ProductDetailPage() {
               {product.online_exclusive && (
                 <div className="mb-4">
                   <span className="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded">
-                    Online exclusive
+                    {t.onlineExclusive}
                   </span>
                 </div>
               )}
               
               {/* Main Image */}
-              <div className="relative bg-white border border-gray-200 rounded-lg overflow-hidden mb-4">
+              <div className="group relative bg-white border border-gray-200 rounded-lg overflow-hidden mb-4">
                 <img
                   src={fixImageUrl(`${mainImage?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}&locale=${locale}`)}
                   alt={mainImage?.title || product.title}
                   className="w-full h-auto object-contain"
                 />
+                {mainImage?.description && (
+                  <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 pointer-events-none">
+                    <p className="text-white text-sm leading-relaxed">{mainImage.description}</p>
+                  </div>
+                )}
               </div>
 
               {/* View Similar Button */}
@@ -205,7 +212,7 @@ export default function ProductDetailPage() {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                 </svg>
-                <span>View similar</span>
+                <span>{t.viewSimilar}</span>
               </button>
             </div>
           </div>
@@ -242,7 +249,7 @@ export default function ProductDetailPage() {
                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                 </svg>
-                ID: {product.uid.slice(-7)}
+                {t.idPrefix} {product.uid.slice(-7)}
               </span>
             </div>
 
@@ -275,11 +282,11 @@ export default function ProductDetailPage() {
             <div className="mb-4">
               <div className="flex items-baseline space-x-2">
                 <span className="text-2xl font-bold text-gray-900">₹ {product.price?.toLocaleString()}</span>
-                <span className="text-gray-400 text-sm">MRP</span>
+                <span className="text-gray-400 text-sm">{t.mrp}</span>
                 <span className="text-gray-400 line-through text-sm">₹ {mrpPrice.toLocaleString()}</span>
               </div>
               <p className="text-sm text-gray-500 mt-1">
-                or pay only ₹ {Math.round(product.price / 3).toLocaleString()} now, rest later via <span className="text-blue-600 font-medium">Auto Pay Later</span>
+                {formatPayLater(t.payLater, Math.round(product.price / 3).toLocaleString())} <span className="text-blue-600 font-medium">{t.autoPayLater}</span>
                 <button className="ml-1 text-gray-400 hover:text-gray-600">
                   <svg className="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -291,7 +298,7 @@ export default function ProductDetailPage() {
             {/* Color Options */}
             {colorOptions.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-sm font-medium text-gray-900 mb-3">COLOUR OPTIONS</h3>
+                <h3 className="text-sm font-medium text-gray-900 mb-3">{t.colourOptions}</h3>
                 <div className="flex space-x-3">
                   {colorOptions.map((color) => (
                     <button
@@ -318,8 +325,8 @@ export default function ProductDetailPage() {
             {sizeOptions.length > 0 && (
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-gray-900">SELECT SIZE</h3>
-                  <button className="text-blue-600 text-sm hover:underline">Size chart</button>
+                  <h3 className="text-sm font-medium text-gray-900">{t.selectSize}</h3>
+                  <button className="text-blue-600 text-sm hover:underline">{t.sizeChart}</button>
                 </div>
                 
                 {/* Size Type Tabs */}
@@ -332,7 +339,7 @@ export default function ProductDetailPage() {
                         : 'bg-white text-gray-600 border-gray-300'
                     }`}
                   >
-                    UK SIZE
+                    {t.ukSize}
                   </button>
                   <button
                     onClick={() => setSizeType("BRAND")}
@@ -342,7 +349,7 @@ export default function ProductDetailPage() {
                         : 'bg-white text-gray-600 border-gray-300'
                     }`}
                   >
-                    BRAND SIZE
+                    {t.brandSize}
                   </button>
                 </div>
 
@@ -368,10 +375,10 @@ export default function ProductDetailPage() {
             {/* Action Buttons */}
             <div className="space-y-3 mb-6">
               <button className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
-                ADD TO CART
+                {t.addToCart}
               </button>
               <button className="w-full py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors">
-                ADD TO WISHLIST
+                {t.addToWishlist}
               </button>
             </div>
 
@@ -383,7 +390,7 @@ export default function ProductDetailPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
-                <span className="text-xs text-gray-600">2 Year Warranty</span>
+                <span className="text-xs text-gray-600">{t.warranty}</span>
               </div>
               <div className="text-center">
                 <div className="w-12 h-12 mx-auto mb-1 flex items-center justify-center">
@@ -391,15 +398,15 @@ export default function ProductDetailPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
                   </svg>
                 </div>
-                <span className="text-xs text-gray-600">Made in India</span>
+                <span className="text-xs text-gray-600">{t.madeInIndia}</span>
               </div>
             </div>
 
             {/* Delivery & Services */}
             {product.seller_details && (
               <div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-2">DELIVERY & SERVICES</h3>
-                <p className="text-sm text-gray-600">Sold by: {product.seller_details.seller_name}</p>
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">{t.deliveryAndServices}</h3>
+                <p className="text-sm text-gray-600">{t.soldBy} {product.seller_details.seller_name}</p>
               </div>
             )}
           </div>
@@ -409,8 +416,8 @@ export default function ProductDetailPage() {
         {/* Product Description - Benefits */}
         {product.description && (
           <div className="mt-12 border-t border-gray-200 pt-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Product Details</h2>
-            <ProductBenefits description={product.description} />
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">{t.productDetails}</h2>
+            <ProductBenefits description={product.description} benefitsLabel={t.benefits} />
           </div>
         )}
       </div>
@@ -419,7 +426,7 @@ export default function ProductDetailPage() {
 }
 
 // Component to parse and display product benefits in a styled grid
-function ProductBenefits({ description }: { description: string }) {
+function ProductBenefits({ description, benefitsLabel }: { description: string; benefitsLabel: string }) {
   // Parse the HTML description to extract benefits
   const parseBenefits = (html: string) => {
     const benefits: { icon: string; title: string; text: string }[] = [];
@@ -477,7 +484,7 @@ function ProductBenefits({ description }: { description: string }) {
 
   return (
     <div className="space-y-6">
-      <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Benefits</h3>
+      <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">{benefitsLabel}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {benefits.map((benefit, index) => (
           <div 
