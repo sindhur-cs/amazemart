@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { PageData as PageType, PageComponent } from "@/lib/types";
-import { fixImageUrl } from "@/lib/utils";
 
 interface CarouselProps {
   page: PageType | null;
@@ -16,7 +15,7 @@ export default function Carousel({ page }: CarouselProps) {
     ? page.components
         .filter((comp: PageComponent) => comp.hero_carousel)
         .map((comp: PageComponent) => ({
-          src: fixImageUrl(`${comp.hero_carousel!.background_image?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`),
+          src: `${comp.hero_carousel!.background_image?.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`,
           alt: comp.hero_carousel!.title,
           title: comp.hero_carousel!.title,
           subtitle: comp.hero_carousel!.cta.title,
@@ -53,7 +52,7 @@ export default function Carousel({ page }: CarouselProps) {
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-4 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-        <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg">
+        <div className="relative w-full aspect-[4/1] rounded-2xl overflow-hidden shadow-lg">
           <div className="relative w-full h-full">
             {carouselImages.map((image, index) => (
               <div
@@ -66,8 +65,8 @@ export default function Carousel({ page }: CarouselProps) {
                   src={image.src}
                   alt={image.alt}
                   fill
-                  sizes="100vw"
-                  className="object-cover"
+                  sizes="(max-width: 1280px) 100vw, 1280px"
+                  className="object-cover object-left"
                   priority={index === 0}
                 />
               </div>

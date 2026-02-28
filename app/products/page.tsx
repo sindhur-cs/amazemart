@@ -166,7 +166,7 @@ function ProductsContent() {
                     )}
                     {thumbnailImage?.url ? (
                       <img
-                        src={fixImageUrl(`${thumbnailImage.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}`)}
+                        src={fixImageUrl(`${thumbnailImage.url}?environment=${process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT}&locale=${locale}`)}
                         alt={product.title}
                         className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                       />

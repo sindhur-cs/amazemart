@@ -14,7 +14,9 @@ async function fetchViaProxy(contentType: string, locale: string = 'en-us') {
     : process.env.NEXT_PUBLIC_APP_URL || 'https://your-domain.com'; // Absolute URL for production
   
   const environment = encodeURIComponent(process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev');
-  const response = await fetch(`${baseUrl}/api/contentstack/content_types/${contentType}/entries?environment=${environment}&locale=${locale}&include_fallback=true`);
+  const response = await fetch(`${baseUrl}/api/contentstack/content_types/${contentType}/entries?environment=${environment}&locale=${locale}&include_fallback=true`, {
+    headers: { api_version: '3.1' },
+  });
   
   if (!response.ok) {
     throw new Error(`Failed to fetch ${contentType} data: ${response.status}`);
@@ -171,7 +173,8 @@ export async function getGalleryEntryByUid(uid: string, locale: string = 'en-us'
     
     const environment = process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev';
     const response = await fetch(
-      `${baseUrl}/api/contentstack/content_types/gallery_page/entries/${uid}?environment=${encodeURIComponent(environment)}&locale=${locale}&include_fallback=true&asset_fields[]=visual_markups`
+      `${baseUrl}/api/contentstack/content_types/gallery_page/entries/${uid}?environment=${encodeURIComponent(environment)}&locale=${locale}&include_fallback=true&asset_fields[]=visual_markups`,
+      { headers: { api_version: '3.1' } }
     );
     
     if (!response.ok) {
@@ -195,7 +198,8 @@ export async function getProductByUid(uid: string, locale: string = 'en-us') {
     
     const environment = process.env.NEXT_PUBLIC_CONTENTSTACK_ENVIRONMENT || 'dev';
     const response = await fetch(
-      `${baseUrl}/api/contentstack/content_types/product/entries/${uid}?environment=${encodeURIComponent(environment)}&locale=${locale}&include_fallback=true&asset_fields[]=user_defined_fields&asset_fields[]=visual_markups`
+      `${baseUrl}/api/contentstack/content_types/product/entries/${uid}?environment=${encodeURIComponent(environment)}&locale=${locale}&include_fallback=true&asset_fields[]=user_defined_fields&asset_fields[]=visual_markups`,
+      { headers: { api_version: '3.1' } }
     );
     
     if (!response.ok) {
@@ -237,7 +241,8 @@ export async function getProductsByCategory(category: string, locale: string = '
     const query = JSON.stringify({ product_category: category });
     
     const response = await fetch(
-      `${baseUrl}/api/contentstack/content_types/product/entries?environment=${encodeURIComponent(environment)}&locale=${locale}&include_fallback=true&query=${encodeURIComponent(query)}`
+      `${baseUrl}/api/contentstack/content_types/product/entries?environment=${encodeURIComponent(environment)}&locale=${locale}&include_fallback=true&query=${encodeURIComponent(query)}`,
+      { headers: { api_version: '3.1' } }
     );
     
     if (!response.ok) {
